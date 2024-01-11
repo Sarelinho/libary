@@ -11,6 +11,10 @@ global.db_pool = db_m.pool;
 const path = require('path');
 const {json} = require('express');
 
+const books_rtr= require('./routers/booksRouter');
+app.use('/books',books_rtr);
+
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "css")));
 app.use(express.static(path.join(__dirname, "js")));
@@ -19,4 +23,5 @@ app.set("view engine","ejs");
 app.listen(port,()=>{
     console.log(`now listening on port ${port}`);
 })
+
 
