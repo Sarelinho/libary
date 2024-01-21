@@ -27,21 +27,21 @@ app.set("view engine","ejs");
 
 
 // Read
-app.get('/api/items', () => {console.log('middleware')},(req, res) => {
-    const sql = 'SELECT * FROM auther';
-    db_pool.getConnection((err, connection) => {
-        if(err) throw err;
-        connection.query(sql, (err, results) => {
-            connection.release();
-            res.json(results);
-            // res.render('views/pages/auther/index', {
-            //     authers: results,
-            //     tagline: "balala"
-            // });
-        });
-    })
-
-});
+// app.get('/api/items', () => {console.log('middleware')},(req, res) => {
+//     const sql = 'SELECT * FROM auther';
+//     db_pool.getConnection((err, connection) => {
+//         if(err) throw err;
+//         connection.query(sql, (err, results) => {
+//             connection.release();
+//             res.json(results);
+//             // res.render('views/pages/auther/index', {
+//             //     authers: results,
+//             //     tagline: "balala"
+//             // });
+//         });
+//     })
+//
+// });
 
 // Update
 app.put('/api/items/:id', (req, res) => {
