@@ -12,7 +12,9 @@ router.get('/readAuther',(req,res)=> {
         if(err) throw err;
         connection.query(sql, (err, results) => {
             connection.release();
+            if(err)throw err;
             res.json(results);
+            res.render('index',{results});
             console.log(results);
         });
     })
