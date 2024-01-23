@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Author Created</title>
+    <title>Author Page</title>
 </head>
 <body>
-<h1>Author Created Successfully</h1>
-
-<% if (results && results.affectedRows > 0) { %>
-    <p>Data inserted successfully.</p>
-<% } else { %>
-    <p>Error inserting data into the database.</p>
-<% } %>
+<h1>Author Details</h1>
+<ul>
+    <% authors.forEach(author => { %>
+        <li>
+            <strong>ID:</strong> <%= author.id %>,
+            <strong>Last Name:</strong> <%= author.last_name %>,
+            <strong>First Name:</strong> <%= author.first_name %>
+        </li>
+    <% }); %>
+</ul>
 </body>
 </html>

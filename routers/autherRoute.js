@@ -19,35 +19,11 @@ router.get('/readAuther',(req,res)=> {
     }
 );
 // Create
-router.post('/api/createAuther', (req, res) => {
 
+// Create
+router.post('/createAuther', (req, res) => {
     const { last_name, first_name, id } = req.body;
-    const sql = 'INSERT INTO items (last_name, first_name, id) VALUES (?, ?, ?)';
-    db_pool.getConnection((err, connection) => {
-        if (err) {
-
-            console.error(err);
-            res.status(500).send('Internal Server Error');
-            return;
-        }
-        connection.query(sql, [last_name,first_name, id], (err, results) => {
-            connection.release();
-            console.log(results)
-
-            if (err) {
-                console.error(err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
-            res.json(results);
-        });
-    });
-});
-
-//delete
-router.delete('/api/deleteAuther/:id', (req, res) => {
-    const authorId = req.params.id;
-    const sql = 'DELETE FROM items WHERE id = ?';
+    const sql = 'INSERT INTO auther (last_name, first_name, id) VALUES (?, ?, ?)';
 
     db_pool.getConnection((err, connection) => {
         if (err) {
@@ -56,7 +32,7 @@ router.delete('/api/deleteAuther/:id', (req, res) => {
             return;
         }
 
-        connection.query(sql, [authorId], (err, results) => {
+        connection.query(sql, [last_name, first_name, id], (err, results) => {
             connection.release();
 
             if (err) {
@@ -65,16 +41,49 @@ router.delete('/api/deleteAuther/:id', (req, res) => {
                 return;
             }
 
-            res.json({ message: 'Author deleted successfully', id: authorId });
+            res.json({ message: 'Auther created successfully', id: results.insertId });
         });
     });
 });
 
-//update
-router.put('/api/updateAuther/:id', (req, res) => {
+
+
+// Delete
+router.delete('/deleteAuther/:id', (req, res) => {
+    const autherId = req.params.id;
+    const sql = 'DELETE FROM auther WHERE id = ?';
+
+    db_pool.getConnection((err, connection) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        connection.query(sql, [autherId], (err, results) => {
+            connection.release();
+
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: err.message });
+                return;
+            }
+
+            if (results.affectedRows === 0) {
+                res.status(404).json({ message: 'Author not found', id: autherId });
+            } else {
+                res.json({ message: 'Author deleted successfully', id: autherId });
+            }
+        });
+    });
+});
+
+
+// Update
+router.put('/updateAuther/:id', (req, res) => {
     const authorId = req.params.id;
     const { last_name, first_name, id } = req.body;
-    const sql = 'UPDATE items SET last_name=?, first_name=?, id=? WHERE author_id=?';
+    const sql = 'UPDATE auther SET last_name=?, first_name=?, id=? WHERE id=?';
 
     db_pool.getConnection((err, connection) => {
         if (err) {
@@ -88,11 +97,15 @@ router.put('/api/updateAuther/:id', (req, res) => {
 
             if (err) {
                 console.error(err);
-                res.status(500).send('Internal Server Error');
+                res.status(500).json({ error: err.message });
                 return;
             }
 
-            res.json({ message: 'Author updated successfully', id: authorId });
+            if (results.affectedRows === 0) {
+                res.status(404).json({ message: 'Author not found', id: authorId });
+            } else {
+                res.json({ message: 'Author updated successfully', id: authorId });
+            }
             console.log(results);
         });
     });
