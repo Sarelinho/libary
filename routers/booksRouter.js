@@ -32,15 +32,17 @@ router.get('/readBooks', (req, res) => {
 
 // create
 router.post('/createBook', (req, res) => {
-    const { id,name, genre_id, auther_id } = req.body;
-    console.log(req.body)
-    // Validate that required fields are provided
-    if (!id || !name || !genre_id || !auther_id) {
+    const { name, genre_id, auther_id } = req.body;
+    console.log(req.body);
+    console.log("here1");
+
+    if (!name || !genre_id || !auther_id) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
+    console.log("here");
 
-    const sql = 'INSERT INTO books (id,name, genre_id, auther_id) VALUES (?,?, ?, ?)';
-    const values = [id,name, genre_id, auther_id];
+    const sql = 'INSERT INTO books (name, genre_id, auther_id) VALUES (?, ?, ?)';
+    const values = [name, genre_id, auther_id];
 
     db_pool.getConnection((err, connection) => {
         if (err) {
@@ -50,6 +52,7 @@ router.post('/createBook', (req, res) => {
 
         connection.query(sql, values, (err, result) => {
             connection.release();
+            console.log(result);
 
             if (err) {
                 console.error('Error executing SQL query:', err);
@@ -62,6 +65,7 @@ router.post('/createBook', (req, res) => {
         });
     });
 });
+
 //delete
 router.delete('/deleteBook/:id', (req, res) => {
     const bookId = req.params.id;
@@ -97,10 +101,10 @@ router.delete('/deleteBook/:id', (req, res) => {
 // update
 router.put('/updateBook/:id', (req, res) => {
     const bookId = req.params.id;
-    const { id,name, genre_id, auther_id } = req.body;
+    const { name, genre_id, auther_id } = req.body;
 
     // Validate that required fields are provided
-    if (!id || !name || !genre_id || !auther_id) {
+    if (!name || !genre_id || !auther_id) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -129,4 +133,5 @@ router.put('/updateBook/:id', (req, res) => {
         });
     });
 });
+
 
