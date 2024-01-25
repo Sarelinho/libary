@@ -14,7 +14,7 @@ router.get('/readAuther',(req,res)=> {
             connection.release();
             if(err)throw err;
             res.json(results);
-            res.render('index',{results});
+            res.render('./views/pages/auther/index',{results});
             console.log(results);
         });
     })

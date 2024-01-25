@@ -14,8 +14,12 @@ const {json} = require('express');
 
 const books_rtr= require('./routers/booksRouter');
 const author_rtr= require('./routers/autherRoute');
+const genre_rtr= require('./routers/genreRouter');
+
 app.use('/books',books_rtr);
 app.use('/auther',author_rtr);
+app.use('/genre',genre_rtr);
+
 app.set("view engine","ejs");
 app.set('views', path.join(__dirname, 'views'));
 
