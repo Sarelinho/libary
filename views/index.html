@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD App</title>
+</head>
+<body>
+<h1>CRUD App</h1>
+
+<!-- Create Form -->
+<form id="createForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+
+    <label for="genre_id">genre:</label>
+    <input type="text" id="genre_id" required>
+
+    <label for="auther_id">auther:</label>
+    <input type="text" id="auther_id" required>
+
+    <label for="id">id:</label>
+    <input type="text" id="id" required>
+
+    <button type="submit">Create</button>
+</form>
+
+<!-- Display Items -->
+<ul id="itemList"></ul>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const createForm = document.getElementById('createForm');
+        const itemList = document.getElementById('itemList');
+
+        // Function to fetch and display items
+        function fetchAndDisplayItems() {
+            fetch('/api/items')
+                .then(response => response.json())
+                .then(items => {
+                    itemList.innerHTML = items.map(item => `<li>${item.name} - ${item.id}- ${item.genre_id}- ${item.auther_id}
+                            <button onclick="updateItem(${item.id})">Update</button>
+                            <button onclick="deleteItem(${item.id})">Delete</button></li>`).join('');
+                });
+        }
+
+        // Function to create an item
+        function createItem(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const id = document.getElementById('id').value;
+            const auther_id = document.getElementById('auther_id').value;
+            const genre_id = document.getElementById('genre_id').value;
+
+
+            fetch('/api/items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({name ,id,genre_id,auther_id }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Item created:', data);
+                    fetchAndDisplayItems();
+                });
+        }
+
+
+        createForm.addEventListener('submit', createItem);
+
+        fetchAndDisplayItems();
+    });
+</script>
+</body>
+</html>
