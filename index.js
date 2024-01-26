@@ -15,6 +15,8 @@ const {json} = require('express');
 const books_rtr= require('./routers/booksRouter');
 const author_rtr= require('./routers/autherRoute');
 const section_rtr= require('./routers/sectionRouter');
+const genre_rtr= require('./routers/genreRouter');
+
 app.use('/books',books_rtr);
 app.use('/section',section_rtr);
 app.use('/auther',author_rtr);
